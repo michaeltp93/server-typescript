@@ -1,0 +1,24 @@
+services:
+  mysql:
+    image: mariadb
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: webdocker_dev
+
+  web:
+    build: .
+    depends_on:
+      - mysql
+    ports:
+      - 5000:5000
+      - 9229:9229 # <- enables debugging later
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
+    environment:
+      DATABASE_URL: mariadb://mariadb@mariadb/webdocker_dev
+      PORT: 5000
