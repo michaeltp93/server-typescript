@@ -1,5 +1,5 @@
 services:
-  mysql:
+  mariadb:
     image: mariadb
     restart: always
     ports:
@@ -11,7 +11,7 @@ services:
   web:
     build: .
     depends_on:
-      - mysql
+      - mariadb
     ports:
       - 5000:5000
       - 9229:9229 # <- enables debugging later
@@ -20,5 +20,5 @@ services:
       - /usr/src/app/node_modules
     command: npm run dev
     environment:
-      DATABASE_URL: mariadb://mariadb@mariadb/webdocker_dev
+      DATABASE_URL: mysql://root:root@mariadb/webdocker_dev
       PORT: 5000
